@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the FaceBook Feed Importer Function feature.
+ */
+
+include_once 'facebook_feed_importer_function.features.inc';
