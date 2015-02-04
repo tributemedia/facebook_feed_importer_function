@@ -21,49 +21,39 @@
  * regardless of any changes in the aliasing that might happen if
  * the view is modified.
  */
-$field_date = $row->_field_data['nid']['entity']->field_facebook_created_date['und'][0]['value'];
 
-$field_date = strtotime($field_date);
-$field_date = date("M jS Y @ g:ia", $field_date);
-
-$objectid = $row->_field_data['nid']['entity']->field_facebook_object_id['und'][0]['value'];
-$picture = $row->_field_data['nid']['entity']->field_facebook_pictures['und'][0]['value'];
-
-//var_dump($row->_field_data['nid']['entity']->field_facebook_id['und'][0]['value']);
-
-if(isset($picture)) {
-	$url = "https://graph.facebook.com/".$objectid."/picture";
-	$size = getimagesize($url);
-	if($size) {
-		 $thePicture = '<div class="facebook-post-image"><a href="'.$url.'" target="_blank"><img src="'.$url.'"></a></div>';
-	} else {
-		 $thePicture = '<div class="facebook-post-image"><a href="'.$picture.'" target="_blank"><img src="'.$picture.'"></a></div>';
-	}
+ 
+if(isset($row->_field_data['nid']['entity']->field_facebook_created_date['und'][0]['value'])) {
+	
+	$field_date = $row->_field_data['nid']['entity']->field_facebook_created_date['und'][0]['value']; 
+	$field_date = strtotime($field_date);
+	$field_date = date("M jS Y @ g:ia", $field_date);
 }
-$screenName = $row->_field_data['nid']['entity']->field_facebook_screen_name['und'][0]['value'];
-$message = $row->_field_data['nid']['entity']->field_facebook_message['und'][0]['value'];
-$link = $row->_field_data['nid']['entity']->field_facebook_link['und'][0]['value'];
 
-
-//function twitterify($ret) {
+if(isset($row->_field_data['nid']['entity']->field_facebook_object_id['und'][0]['value'])) { $objectid = $row->_field_data['nid']['entity']->field_facebook_object_id['und'][0]['value']; }
+if(isset($row->_field_data['nid']['entity']->field_facebook_pictures['und'][0]['value'])) {
+	
+	$picture = $row->_field_data['nid']['entity']->field_facebook_pictures['und'][0]['value']; 
+		if(isset($picture)) {
+			$thePicture = '<div class="facebook-post-image"><a href="'.$picture.'" target="_blank"><img src="'.$picture.'"></a></div>';
+		}
+}
+if(isset($row->_field_data['nid']['entity']->field_facebook_screen_name['und'][0]['value'])) { $screenName = $row->_field_data['nid']['entity']->field_facebook_screen_name['und'][0]['value']; }
+if(isset($row->_field_data['nid']['entity']->field_facebook_link['und'][0]['value'])) { $link = $row->_field_data['nid']['entity']->field_facebook_link['und'][0]['value']; }
+if(isset($row->_field_data['nid']['entity']->field_facebook_message['und'][0]['value'])) { $message = $row->_field_data['nid']['entity']->field_facebook_message['und'][0]['value']; 
   $message = preg_replace("#(^|[\n ])([\w]+?://[\w]+[^ \"\n\r\t< ]*)#", "\\1<a href=\"\\2\" target=\"_blank\">\\2", $message);
   $message = preg_replace("#(^|[\n ])((www|ftp)\.[^ \"\t\n\r< ]*)#", "\\1<a href=\"http://\\2\" target=\"_blank\">\\2", $message);
   $message = preg_replace("/@(\w+)/", "<a class=\"hashtag\" href=\"http://www.twitter.com/\\1\" target=\"_blank\">@\\1</a>", $message);
   $message = preg_replace("/#(\w+)/", "<a class=\"hashtag\" href=\"http://search.twitter.com/search?q=\\1\" target=\"_blank\">#\\1</a>", $message);
-//return $ret;
-//}
-//$message = twitterify($message);
-
+}
 
 
 ?>
 <div class="facebook-contain">
 	<div class="facebook-header">
-	<div class="facebook-user-name"><a class="facebook-link" target="_blank"  href="https://www.facebook.com/CSofSWIdaho">Crime Stoppers<!--<?php print $screenName; ?>--></a></div><div class="facebook-created">- <?php print $field_date; ?></div></div><!-- /facebook-header -->
-	<div class="facebook-body"><?php print $message; ?></div>
+	<div class="facebook-user-name"><a class="facebook-link" target="_blank"  href="https://www.facebook.com/pages/Plumbing-Solutions-of-Idaho/1462481057364373">Plumbing Solutions of Idaho</a></div><div class="facebook-created">- <?php if(isset($field_date)) { print $field_date; } ?></div></div><!-- /facebook-header -->
+	<div class="facebook-body"><?php if(isset($message)) { print $message; } ?></div>
 	<?php if(isset($thePicture)) { print $thePicture; } ?>
-<!--	<div class="facebook-post-image"><a href="<?php print $link; ?>" target="_blank"><img src="<?php print $thePicture; ?>"></a></div> -->
-
 </div><!-- /facebook-contain -->
 
 <?php //print $output; ?><?php
